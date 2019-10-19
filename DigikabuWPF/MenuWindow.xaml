@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:DigikabuWPF"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
-        Title="MainWindow" Height="550" Width="1190" WindowStyle="None" WindowStartupLocation="CenterScreen" Foreground="White" MouseDown="Window_MouseDown" Background="LightGray" ResizeMode="NoResize">
+        Title="Digikabu" Height="550" Width="1190" WindowStyle="None" WindowStartupLocation="CenterScreen" Foreground="White" MouseDown="Window_MouseDown" Background="LightGray" ResizeMode="NoResize">
 
 
 
