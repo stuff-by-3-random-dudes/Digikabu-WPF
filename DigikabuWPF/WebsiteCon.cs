@@ -440,12 +440,350 @@ namespace DigikabuWPF
                     }
                     if (s.Contains("3. Stunde"))
                     {
-                        stundenl.Add("Pause (10:00 - 10:25)");
+                        stundenl.Add("Pause (10:00 - 10:15)");
                     }
                     //TODO ADD RAUM
                     stundenl.Add(edit_s);
                     
                     
+                }
+            }
+            catch (Exception)
+            {
+
+            }
+            return stundenl;
+        }
+        public static async Task<List<string>> getStundenplan(DateTime date)
+        {
+            List<string> stundenl = new List<string>();
+            try
+            {
+                relog();
+                var response = await client.GetAsync("https://digikabu.de/Main?date=" + date.ToString("yyyy-MM-dd"));
+                var responsestring = await response.Content.ReadAsStringAsync();
+                string[] stunden = new string[10];
+                int fach = 0;
+                int fach2 = 0;
+                string[] splitfach1 = new string[] { };
+                string fachsave = string.Empty;
+                foreach (string s in responsestring.Split('<'))
+                {
+
+                    if (s.Contains("svg x="))
+                    {
+                        string[] split = s.Split(' ');
+                        string[] fach1 = split[2].Split('\'');
+                        string[] fachx = split[4].Split('\'');
+                        splitfach1 = split[1].Split('\'');
+                        //splitfach2 = split[3].Split('\'');
+                        fach2 = Convert.ToInt32(fachx[1]) / 60;
+                        fach = Convert.ToInt32(fach1[1]) / 60;
+                    }
+
+                    if (s.Contains("text-anchor='middle'"))
+                    {
+                        string[] split = s.Split('>');
+                        fachsave = split[1];
+
+                        if (fach2 < 2)
+                        {
+                            if (splitfach1[1] != "115")
+                            {
+                                stunden[fach] += fachsave;
+                            }
+                            else
+                            {
+                                stunden[fach] += " / " + fachsave;
+                            }
+                        }
+                        else
+                        {
+                            if (fach2 == 2)
+                            {
+                                switch (fach)
+                                {
+                                    case 0:
+                                        if (splitfach1[1] != "115")
+                                        {
+                                            stunden[0] += fachsave;
+                                            stunden[1] += fachsave;
+                                        }
+                                        else
+                                        {
+                                            stunden[0] += " / " + fachsave;
+                                            stunden[1] += " / " + fachsave;
+                                        }
+
+                                        break;
+                                    case 1:
+                                        if (splitfach1[1] != "115")
+                                        {
+                                            stunden[1] += fachsave;
+                                            stunden[2] += fachsave;
+                                        }
+                                        else
+                                        {
+                                            stunden[1] += " / " + fachsave;
+                                            stunden[2] += " / " + fachsave;
+                                        }
+                                        break;
+                                    case 2:
+                                        if (splitfach1[1] != "115")
+                                        {
+                                            stunden[2] += fachsave;
+                                            stunden[3] += fachsave;
+                                        }
+                                        else
+                                        {
+                                            stunden[2] += " / " + fachsave;
+                                            stunden[3] += " / " + fachsave;
+                                        }
+                                        break;
+                                    case 3:
+                                        if (splitfach1[1] != "115")
+                                        {
+                                            stunden[3] += fachsave;
+                                            stunden[4] += fachsave;
+                                        }
+                                        else
+                                        {
+                                            stunden[3] += " / " + fachsave;
+                                            stunden[4] += " / " + fachsave;
+                                        }
+                                        break;
+                                    case 4:
+                                        if (splitfach1[1] != "115")
+                                        {
+                                            stunden[4] += fachsave;
+                                            stunden[5] += fachsave;
+                                        }
+                                        else
+                                        {
+                                            stunden[4] += " / " + fachsave;
+                                            stunden[5] += " / " + fachsave;
+                                        }
+                                        break;
+                                    case 5:
+                                        if (splitfach1[1] != "115")
+                                        {
+                                            stunden[5] += fachsave;
+                                            stunden[6] += fachsave;
+                                        }
+                                        else
+                                        {
+                                            stunden[5] += " / " + fachsave;
+                                            stunden[6] += " / " + fachsave;
+                                        }
+                                        break;
+                                    case 6:
+                                        if (splitfach1[1] != "115")
+                                        {
+                                            stunden[6] = fachsave;
+                                            stunden[7] = fachsave;
+                                        }
+                                        else
+                                        {
+                                            stunden[6] += " / " + fachsave;
+                                            stunden[7] += " / " + fachsave;
+                                        }
+                                        break;
+                                    case 7:
+                                        if (splitfach1[1] != "115")
+                                        {
+                                            stunden[7] += fachsave;
+                                            stunden[8] += fachsave;
+                                        }
+                                        else
+                                        {
+                                            stunden[7] += " / " + fachsave;
+                                            stunden[8] += " / " + fachsave;
+                                        }
+                                        break;
+                                    case 8:
+                                        if (splitfach1[1] != "115")
+                                        {
+                                            stunden[8] += fachsave;
+                                            stunden[9] += fachsave;
+                                        }
+                                        else
+                                        {
+                                            stunden[8] += " / " + fachsave;
+                                            stunden[9] += " / " + fachsave;
+                                        }
+                                        break;
+                                    case 9:
+                                        if (splitfach1[1] != "115")
+                                        {
+                                            stunden[9] += fachsave;
+
+                                        }
+                                        else
+                                        {
+                                            stunden[9] += " / " + fachsave;
+
+                                        }
+                                        break;
+                                }
+                            }
+                            else
+                            {
+                                switch (fach)
+                                {
+                                    case 0:
+                                        if (splitfach1[1] != "115")
+                                        {
+                                            stunden[0] += fachsave;
+                                            stunden[1] += fachsave;
+                                            stunden[2] += fachsave;
+                                        }
+                                        else
+                                        {
+                                            stunden[0] += " / " + fachsave;
+                                            stunden[1] += " / " + fachsave;
+                                            stunden[2] += " / " + fachsave;
+                                        }
+                                        break;
+                                    case 1:
+                                        if (splitfach1[1] != "115")
+                                        {
+                                            stunden[1] += fachsave;
+                                            stunden[2] += fachsave;
+                                            stunden[3] += fachsave;
+                                        }
+                                        else
+                                        {
+                                            stunden[1] += " / " + fachsave;
+                                            stunden[2] += " / " + fachsave;
+                                            stunden[3] += " / " + fachsave;
+                                        }
+                                        break;
+                                    case 2:
+                                        if (splitfach1[1] != "115")
+                                        {
+                                            stunden[2] += fachsave;
+                                            stunden[3] += fachsave;
+                                            stunden[4] += fachsave;
+                                        }
+                                        else
+                                        {
+                                            stunden[2] += " / " + fachsave;
+                                            stunden[3] += " / " + fachsave;
+                                            stunden[4] += " / " + fachsave;
+                                        }
+                                        break;
+                                    case 3:
+                                        if (splitfach1[1] != "115")
+                                        {
+                                            stunden[3] += fachsave;
+                                            stunden[4] += fachsave;
+                                            stunden[5] += fachsave;
+                                        }
+                                        else
+                                        {
+                                            stunden[3] += " / " + fachsave;
+                                            stunden[4] += " / " + fachsave;
+                                            stunden[5] += " / " + fachsave;
+                                        }
+                                        break;
+                                    case 4:
+                                        if (splitfach1[1] != "115")
+                                        {
+                                            stunden[4] += fachsave;
+                                            stunden[5] += fachsave;
+                                            stunden[6] += fachsave;
+                                        }
+                                        else
+                                        {
+                                            stunden[4] += " / " + fachsave;
+                                            stunden[5] += " / " + fachsave;
+                                            stunden[6] += " / " + fachsave;
+                                        }
+                                        break;
+                                    case 5:
+                                        if (splitfach1[1] != "115")
+                                        {
+                                            stunden[5] += fachsave;
+                                            stunden[6] += fachsave;
+                                            stunden[7] += fachsave;
+                                        }
+                                        else
+                                        {
+                                            stunden[5] += " / " + fachsave;
+                                            stunden[6] += " / " + fachsave;
+                                            stunden[7] += " / " + fachsave;
+                                        }
+                                        break;
+                                    case 6:
+                                        if (splitfach1[1] != "115")
+                                        {
+                                            stunden[6] += fachsave;
+                                            stunden[7] += fachsave;
+                                            stunden[8] += fachsave;
+                                        }
+                                        else
+                                        {
+                                            stunden[6] += " / " + fachsave;
+                                            stunden[7] += " / " + fachsave;
+                                            stunden[8] += " / " + fachsave;
+                                        }
+                                        break;
+                                    case 7:
+                                        if (splitfach1[1] != "115")
+                                        {
+                                            stunden[7] += fachsave;
+                                            stunden[8] += fachsave;
+                                            stunden[9] += fachsave;
+                                        }
+                                        else
+                                        {
+                                            stunden[7] += " / " + fachsave;
+                                            stunden[8] += " / " + fachsave;
+                                            stunden[9] += " / " + fachsave;
+                                        }
+                                        break;
+                                    case 8:
+                                        if (splitfach1[1] != "115")
+                                        {
+                                            stunden[8] += fachsave;
+                                            stunden[9] += fachsave;
+                                        }
+                                        else
+                                        {
+                                            stunden[8] += " / " + fachsave;
+                                            stunden[9] += " / " + fachsave;
+                                        }
+                                        break;
+                                    case 9:
+                                        if (splitfach1[1] != "115")
+                                        {
+
+                                            stunden[9] += fachsave;
+                                        }
+                                        else
+                                        {
+
+                                            stunden[9] += " / " + fachsave;
+                                        }
+                                        break;
+                                }
+                            }
+
+                        }
+                    }
+
+                }
+                foreach (string s in stunden)
+                {
+                    string edit_s = s;
+                    if (edit_s == null)
+                    {
+                        edit_s = "";
+                    }
+                    //TODO ADD RAUM
+                    stundenl.Add(edit_s);
+
+
                 }
             }
             catch (Exception)

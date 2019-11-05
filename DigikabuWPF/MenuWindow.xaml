@@ -36,7 +36,9 @@
 
         </EventTrigger>
     </Window.Triggers>
+
     <Grid>
+
         <TabControl x:Name="TAB" HorizontalAlignment="Left" Height="526" Margin="60,33,-12,-17" VerticalAlignment="Top" Width="1144" BorderBrush="{x:Null}" Background="{x:Null}" Foreground="{x:Null}" BorderThickness="0">
 
             <!--Termine-->
@@ -46,8 +48,8 @@
                         <RowDefinition Height="349*"/>
                         <RowDefinition Height="151*"/>
                     </Grid.RowDefinitions>
-                    <TextBlock HorizontalAlignment="Left" Margin="53,27,0,0" TextWrapping="Wrap" Text="Stundenplan" VerticalAlignment="Top" FontSize="25"/>
-                    <ListView x:Name="SP" Height="400" Margin="53,65,721,35" IsTextSearchEnabled="False" Background="LightGray" Focusable="False" Grid.RowSpan="2">
+                    <TextBlock x:Name="HOUR" HorizontalAlignment="Left" Margin="53,27,0,0" TextWrapping="Wrap" Text="Stundenplan" VerticalAlignment="Top" FontSize="25"/>
+                    <ListView x:Name="SP" Height="400" Margin="53,65,721,35" IsTextSearchEnabled="False" Background="LightGray" Focusable="False" Grid.RowSpan="2" BorderBrush="#FF5F5F5F">
 
                     </ListView>
 
@@ -62,7 +64,34 @@
 
             <!--Wochenstundenplan-->
             <TabItem Header="Wochenstundenplan">
+
                 <Grid Background="LightGray" Margin="-31,0,0,0">
+                    <TextBlock Text="Wochenstundenplan vom" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="22" Margin="235,25,672,445" Foreground="Black" Width="264"/>
+                    <TextBlock x:Name="Mondat" Text="[montag]" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="22" Margin="504,25,545,445" Foreground="Black" Width="122"/>
+                    <TextBlock Text="bis" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="22" Margin="672,26,449,446" Foreground="Black" Width="50"/>
+                    <TextBlock x:Name="Frdat" Text="[freitag]" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="22" Margin="798,26,251,444" Foreground="Black" Width="122"/>
+                    <GroupBox Header="Montag" HorizontalAlignment="Left" Height="407" Margin="42,66,0,0" VerticalAlignment="Top" Width="196" BorderBrush="#FFFBFBFB"/>
+                    <GroupBox Header="Dienstag" HorizontalAlignment="Left" Height="407" Margin="265,66,0,0" VerticalAlignment="Top" Width="196"/>
+                    <GroupBox Header="Mittwoch" HorizontalAlignment="Left" Height="407" Margin="494,66,0,0" VerticalAlignment="Top" Width="196"/>
+                    <GroupBox Header="Donnerstag" HorizontalAlignment="Left" Height="407" Margin="724,66,0,0" VerticalAlignment="Top" Width="196"/>
+                    <GroupBox Header="Freitag" HorizontalAlignment="Left" Height="407" Margin="950,66,0,0" VerticalAlignment="Top" Width="196"/>
+                    <ListView x:Name="WSP_DIE" HorizontalAlignment="Left" Height="354" Margin="270,106,0,0" VerticalAlignment="Top" Width="185">
+
+                    </ListView>
+                    <ListView x:Name="WSP_MON" HorizontalAlignment="Left" Height="354" Margin="47,106,0,0" VerticalAlignment="Top" Width="185">
+
+                    </ListView>
+                    <ListView x:Name="WSP_MIT" HorizontalAlignment="Left" Height="354" Margin="498,106,0,0" VerticalAlignment="Top" Width="185">
+
+                    </ListView>
+                    <ListView x:Name="WSP_DON" HorizontalAlignment="Left" Height="354" Margin="730,106,0,0" VerticalAlignment="Top" Width="185">
+
+                    </ListView>
+                    <ListView x:Name="WSP_FR" HorizontalAlignment="Left" Height="354" Margin="957,106,0,0" VerticalAlignment="Top" Width="185">
+
+                    </ListView>
+                    <Button HorizontalAlignment="Left" Margin="42,66,0,0" VerticalAlignment="Top" Width="1104" Height="424" Foreground="{x:Null}" BorderBrush="{x:Null}" Background="{x:Null}" IsEnabled="False"/>
+
 
                 </Grid>
             </TabItem>
@@ -123,6 +152,7 @@
                 <TextBlock x:Name="Klasse" Text="[Klasse]" VerticalAlignment="Center" FontSize="18"/>
             </StackPanel>
             <TextBlock Width="150" Text="Schüler: " VerticalAlignment="Center" FontSize="18" Margin="81,25,959,23"/>
+
         </Grid>
         <Grid x:Name="GridMenu" Width="60" HorizontalAlignment="Left">
             <Grid.Background>

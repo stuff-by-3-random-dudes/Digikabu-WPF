@@ -20,16 +20,152 @@ namespace DigikabuWPF
     /// </summary>
     public partial class MenuWindow : Window
     {
+        static System.Windows.Threading.DispatcherTimer dispatcherTimer = new System.Windows.Threading.DispatcherTimer();
+        static System.Windows.Threading.DispatcherTimer reloadTimer = new System.Windows.Threading.DispatcherTimer();
 
         public MenuWindow()
         {
             InitializeComponent();
             this.Hide();
-            GetSPTM();
+            getAll();
             Termine.IsSelected = true;
             GetSK();
             this.Show();
+            dispatcherTimer.Tick += new EventHandler(dispatcherTimer_Tick);
+            dispatcherTimer.Interval = new TimeSpan(0, 0, 1);
+            dispatcherTimer.Start();
+            reloadTimer.Tick += new EventHandler(reloadTimer_Tick);
+            reloadTimer.Interval = new TimeSpan(0, 15, 0);
+            reloadTimer.Start();
         }
+
+        private void reloadTimer_Tick(object sender, EventArgs e)
+        {
+            getAll();
+        }
+        private void getAll()
+        {
+            GetSPTM();
+            GetWSP();
+        }
+        private void dispatcherTimer_Tick(object sender, EventArgs e)
+        {
+            string uStart = "8:30", ausgabe = string.Empty;
+            int stdDauer = 45, pDauer = 15, pPos = 2, stdAnz = 10;
+
+            DateTime jetzt = DateTime.Now;
+            List<DateTime> uhrZeiten = new List<DateTime>();
+
+            uhrZeiten.Add(Convert.ToDateTime(uStart));
+            for (int i = 0; i <= stdAnz; i++)
+            {
+                if (i == pPos)
+                {
+                    uhrZeiten.Add(uhrZeiten[i].AddMinutes(pDauer));
+                }
+                else
+                {
+                    uhrZeiten.Add(uhrZeiten[i].AddMinutes(stdDauer));
+                }
+            }
+            for (int i = 0; i < uhrZeiten.Count - 1; i++)
+            {
+                if (jetzt >= uhrZeiten[i] && jetzt < uhrZeiten[i + 1])
+                {
+                    if (i < pPos)
+                    {
+                        ausgabe = $"{i + 1}";
+                    }
+                    else if (i == pPos)
+                    {
+                        ausgabe = "Pause";
+                    }
+                    else if (i > pPos)
+                    {
+                        ausgabe = $"{i}";
+                    }
+
+                }
+            }
+            ListViewItem lvi = null;
+            ListViewItem lvilast = null;
+            switch (ausgabe)
+            {
+                case "1":
+                    SP.SelectedIndex = 0;
+                    lvi = SP.ItemContainerGenerator.ContainerFromItem(SP.SelectedItem) as ListViewItem;
+
+                    
+
+                    break;
+                case "2":
+                    SP.SelectedIndex = 1;
+                    lvi = SP.ItemContainerGenerator.ContainerFromItem(SP.SelectedItem) as ListViewItem;
+                    lvilast = SP.ItemContainerGenerator.ContainerFromIndex(SP.SelectedIndex - 1) as ListViewItem;
+                    break;
+                case "Pause":
+                    SP.SelectedIndex = 2;
+                    lvi = SP.ItemContainerGenerator.ContainerFromItem(SP.SelectedItem) as ListViewItem;
+                    lvilast = SP.ItemContainerGenerator.ContainerFromIndex(SP.SelectedIndex - 1) as ListViewItem;
+                    break;
+                case "3":
+                    SP.SelectedIndex = 3;
+                    lvi = SP.ItemContainerGenerator.ContainerFromItem(SP.SelectedItem) as ListViewItem;
+                    lvilast = SP.ItemContainerGenerator.ContainerFromIndex(SP.SelectedIndex - 1) as ListViewItem;
+                    break;
+                case "4":
+                    SP.SelectedIndex = 4;
+                    lvi = SP.ItemContainerGenerator.ContainerFromItem(SP.SelectedItem) as ListViewItem;
+                    lvilast = SP.ItemContainerGenerator.ContainerFromIndex(SP.SelectedIndex - 1) as ListViewItem;
+                    break;
+                case "5":
+                    SP.SelectedIndex = 5;
+                    lvi = SP.ItemContainerGenerator.ContainerFromItem(SP.SelectedItem) as ListViewItem;
+                    lvilast = SP.ItemContainerGenerator.ContainerFromIndex(SP.SelectedIndex - 1) as ListViewItem;
+                    break;
+                case "6":
+                    SP.SelectedIndex = 6;
+                    lvi = SP.ItemContainerGenerator.ContainerFromItem(SP.SelectedItem) as ListViewItem;
+                    lvilast = SP.ItemContainerGenerator.ContainerFromIndex(SP.SelectedIndex - 1) as ListViewItem;
+                    break;
+                case "7":
+                    SP.SelectedIndex = 7;
+                    lvi = SP.ItemContainerGenerator.ContainerFromItem(SP.SelectedItem) as ListViewItem;
+                    lvilast = SP.ItemContainerGenerator.ContainerFromIndex(SP.SelectedIndex - 1) as ListViewItem;
+                    break;
+                case "8":
+                    SP.SelectedIndex = 8;
+                    lvi = SP.ItemContainerGenerator.ContainerFromItem(SP.SelectedItem) as ListViewItem;
+                    lvilast = SP.ItemContainerGenerator.ContainerFromIndex(SP.SelectedIndex - 1) as ListViewItem;
+                    break;
+                case "9":
+                    SP.SelectedIndex = 9;
+                    lvi = SP.ItemContainerGenerator.ContainerFromItem(SP.SelectedItem) as ListViewItem;
+                    lvilast = SP.ItemContainerGenerator.ContainerFromIndex(SP.SelectedIndex - 1) as ListViewItem;
+                    break;
+                case "10":
+                    SP.SelectedIndex = 10;
+                    lvi = SP.ItemContainerGenerator.ContainerFromItem(SP.SelectedItem) as ListViewItem;
+                    lvilast = SP.ItemContainerGenerator.ContainerFromIndex(SP.SelectedIndex - 1) as ListViewItem;
+                    break;
+                default:
+                    SP.SelectedIndex = -1;
+                    lvilast = SP.ItemContainerGenerator.ContainerFromIndex(10) as ListViewItem;
+                    break;
+            }
+            if (lvi != null)
+
+            {
+
+                lvi.Background = Brushes.DarkGray;
+
+            }
+            if(lvilast != null)
+            {
+                lvilast.Background = Brushes.Transparent;
+            }
+        }
+
         private async void GetSK()
         {
             var tosplit = await WebsiteCon.GetUNKL();
@@ -41,6 +177,50 @@ namespace DigikabuWPF
         {
             SP.ItemsSource = await WebsiteCon.getStundenplan();
             TM.ItemsSource = await WebsiteCon.getTermine();
+        }
+        private async void GetWSP()
+        {
+            DateTime datum_montag = StartingDateOfWeek(DateTime.Now), datum_freitag = datum_montag.AddDays(4);
+            Mondat.Text = datum_montag.ToString("dd.MM.yyyy");
+            Frdat.Text = datum_freitag.ToString("dd.MM.yyyy");
+            WSP_MON.ItemsSource     =   await WebsiteCon.getStundenplan(datum_montag);
+            WSP_DIE.ItemsSource     =   await WebsiteCon.getStundenplan(datum_montag.AddDays(1));
+            WSP_MIT.ItemsSource     =   await WebsiteCon.getStundenplan(datum_montag.AddDays(2));
+            WSP_DON.ItemsSource     =   await WebsiteCon.getStundenplan(datum_montag.AddDays(3));
+            WSP_FR.ItemsSource      =   await WebsiteCon.getStundenplan(datum_montag.AddDays(4));
+        }
+        private DateTime StartingDateOfWeek(DateTime date)
+        {
+            DateTime usedDate;
+            int dateAdjustment = 0;
+            switch (date.DayOfWeek)
+            {
+                case DayOfWeek.Sunday:
+                    dateAdjustment = 1;
+                    break;
+                case DayOfWeek.Monday:
+                    dateAdjustment = 0;
+                    break;
+                case DayOfWeek.Tuesday:
+                    dateAdjustment = -1;
+                    break;
+                case DayOfWeek.Wednesday:
+                    dateAdjustment = -2;
+                    break;
+                case DayOfWeek.Thursday:
+                    dateAdjustment = -3;
+                    break;
+                case DayOfWeek.Friday:
+                    dateAdjustment = -4;
+                    break;
+                case DayOfWeek.Saturday:
+                    dateAdjustment = 2;
+                    break;
+                default:
+                    break;
+            }
+            usedDate = date.AddDays(Convert.ToDouble(dateAdjustment));
+            return usedDate;
         }
         private void ButtonPopUpLogout_Click(object sender, RoutedEventArgs e)
         {
